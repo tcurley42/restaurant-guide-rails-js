@@ -1,0 +1,14 @@
+<h1><%= @restaurant.name %></h1>
+<%= render partial: 'display', locals: {r: @restaurant, display_name: false} %>
+<h1>Reviews</h1>
+<% @restaurant.experiences.each do |experience| %>
+  <div class="center review">
+    <strong>User: </strong><%=experience.user.name %><br>
+    <strong>Rating: </strong><%=experience.rating %><br>
+    <strong>Description: </strong><%=experience.description %><br>
+    <% if experience.user == current_user %>
+      <%= link_to "Edit Review", edit_restaurant_experience_path(@restaurant, experience) %>
+    <% end %>
+  </div>
+  <br>
+<% end %>

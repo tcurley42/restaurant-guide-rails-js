@@ -1,0 +1,15 @@
+<div class="center info">
+  <% if display_name %>
+    <h3><%= r.name %><br></h3>
+  <% end %>
+  <strong>Phone: </strong><%= r.phone %><br>
+  <strong>Address: </strong><%= r.address %><br>
+  <strong>City: </strong><%= r.city %><br>
+  <strong>State: </strong><%= r.state %><br>
+  <strong>Price (1-10): </strong><%= r.price %><br>
+  <strong>Average Rating (1-10): </strong><%= r.avg_rating %><br>
+
+  <%= link_to "Edit Restaurant", edit_restaurant_path(r) %><br>
+  <%= link_to "Write a Review", new_restaurant_experience_path(r)  %><br>
+  <%= link_to "View Restaurant", restaurant_path(r) %>
+</div>

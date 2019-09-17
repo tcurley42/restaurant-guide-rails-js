@@ -1,0 +1,11 @@
+<div class="container">
+  <%= form_for :user, url: '/sessions' do |f| %>
+    Select User: <%= f.collection_select :id, User.all, :id, :name %><br>
+    Password: <%= f.password_field :password, id: "password" %><br>
+    <%= f.submit "Sign In" %>
+  <% end %>
+</div>
+<br>
+<a href="/users/new">Create User</a>
+<br>
+<a href='/auth/facebook'>Login with Facebook</a>

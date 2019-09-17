@@ -1,0 +1,27 @@
+<h1>Welcome to your Restaurant Guide!</h1>
+<% if logged_in? %>
+  <h3><%= link_to "Create New Restaurant", new_restaurant_path %></h3>
+  <h3><a id="all-restaurants" href="#">View All Restaurants</a></h3>
+<% else %>
+  <h3>Please login or create an account to continue!</h3>
+<% end %>
+
+<div id="restaurants"></div>
+
+<script type="text/javascript" charset="utf-8">
+    $("a#all-restaurants").on('click', function(e) {
+        e.preventDefault();
+        $.get('/restaurants.json', function(data) {
+            data.forEach(function (element) {
+                let r = new Restaurant(element["id"], element["name"], element["phone"], element["address"], element["city"], element["state"]);
+                let addR = "<div>";
+                addR += `<h3>${r.name}</h3>`;
+                addR += `<strong>Phone: </strong> ${r.phone}<br>`;
+                addR += `<strong>Address: </strong> ${r.fullAddress()}<br>`;
+                addR += `<a href='/restaurants/${r.id}'> View Restaurant</a>`
+                addR += "</div>";
+                $("div#restaurants").append(addR);
+            });
+        });
+  });
+</script>
