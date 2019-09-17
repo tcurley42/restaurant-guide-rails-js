@@ -25,11 +25,12 @@ class RestaurantsController < ApplicationController
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    if (@restaurant.save)
-      serialized = @restaurant.serialize
-      render json: @restaurant, status: 201
+    if (!@restaurant.save)
+      serialized = RestaurantSerializer.new(@restaurant).as_json
+      serialized["errors"] = @restaurant.errors.full_messages
+      render json: serialized, status: 201
     else
-
+      render json: @restaurant, status: 201
     end
   end
 

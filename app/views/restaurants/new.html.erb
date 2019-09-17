@@ -1,5 +1,10 @@
 <h1>New Restaurant</h1>
-<%= render partial: 'form', locals: {r: @restaurant, button_text: "Create Restaurant"} %>
+<div>
+  <ul class="errors">
+
+  </ul>
+</div>
+<%= render partial: 'form', locals: {r: @restaurant, button_text: "Create Restaurant"}, class: "new_restaurant_form" %>
 
 <div class="restaurantInfo">
   <h1 class="restaurantName"></h1>
@@ -7,23 +12,3 @@
   <p class="restaurantAddress"></p>
   <p class="restaurantPrice"></p>
 </div>
-
-<script type="text/javascript" charset="utf-8">
-  $("form").on('submit', function(e) {
-      e.preventDefault();
-
-      let values = $(this).serialize();
-
-      let posting = $.post("/restaurants", values);
-
-      posting.done(function(data) {
-          let r = new Restaurant(data["id"], data["name"], data["phone"], data["address"], data["city"], data["state"], data["price"]);
-          $(".restaurantName").html(r.name);
-          $(".restaurantPhone").html(r.phone);
-          $(".restaurantAddress").html(r.fullAddress());
-          $(".restaurantPrice").html(r.price);
-
-          // Add a link to write a review and do that via AJAX too
-      });
-  });
-</script>
