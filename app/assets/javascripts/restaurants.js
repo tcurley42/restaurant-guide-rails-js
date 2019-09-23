@@ -27,6 +27,8 @@ function addEventListeners() {
     $("form.new_restaurant").on('submit', newRestaurantListener);
 
     $(document).on("click", "a.show-restaurant", showRestaurantListener);
+
+    $("a#sort-all").on('click', sortListener);
 }
 
 function allRestaurantsListener(e) {
@@ -45,6 +47,8 @@ function allRestaurantsListener(e) {
             $("div#restaurants").append(addR);
         });
     });
+
+    $("a#sort-all").removeAttr("hidden");
 }
 
 function newRestaurantListener(e) {
@@ -98,6 +102,38 @@ function showRestaurantListener(e) {
         }
     });
     $("div#restaurants").html("");
+}
+
+function sortListener(e) {
+    e.preventDefault();
+
+    $('div#restaurants').html('');
+    $.get('/restaurants.json', function(data) {
+        data.sort(function(a, b) {
+            var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+            var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+
+            // names must be equal
+            return 0;
+        });
+
+        data.forEach(function (element) {
+            let r = new Restaurant(element["id"], element["name"], element["phone"], element["address"], element["city"], element["state"]);
+            let addR = "<div>";
+            addR += `<h3>${r.name}</h3>`;
+            addR += `<strong>Phone: </strong> ${r.phone}<br>`;
+            addR += `<strong>Address: </strong> ${r.fullAddress()}<br>`;
+            addR += `<a class="show-restaurant" href='#' data-id="${r.id}"> View Restaurant</a>`
+            addR += "</div>";
+            $("div#restaurants").append(addR);
+        });
+    });
 }
 
 function clearRestaurant() {
